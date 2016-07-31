@@ -7,17 +7,8 @@
 //
 
 import Foundation
-
 import UIKit
-
-//import CoreNetworking
-//import CoreOperation
-
-enum MediaAspectRatio: String {
-    
-    case Portrait = "portrait_incredible"
-    case Camera = "camera"
-}
+import ConvenientFileManager
 
 class OMDBMediaAPIManager: NSObject {
     
@@ -29,43 +20,75 @@ class OMDBMediaAPIManager: NSObject {
      */
     class func retrieveOMDBMediaAsset(movie: Movie, completion:((imageMovie: Movie, mediaImage: UIImage?) -> Void)?) {
         
-
-                if let thumbnailPath = movie.posterUrl {
-                    
-                        let urlString: String = String(format: "%@", thumbnailPath)
-                        let urlPath = NSURL(string: urlString)
-                        let session = NSURLSession.sharedSession()
-                        let task = session.dataTaskWithURL(urlPath!){
-                        
-                        data, response, error -> Void in
-                        
-                        if (error != nil) {
-                            
-                            print(error!.localizedDescription)
+                let cacheDirectory: String = NSFileManager.cfm_cacheDirectoryPath()
+                let absolutePath: String = cacheDirectory.stringByAppendingString(String(format: "/%@_image", movie.imdbID!))
+        
+                NSFileManager.cfm_fileExistsAtPath(absolutePath) { (fileExists: Bool) -> Void in
+        
+                    if fileExists {
+        
+                        let documentName: String = String(format: "%@_image", movie.imdbID!)
+        
+                        let imageData = NSFileManager.cfm_retrieveDataFromCacheDirectoryWithPath(documentName)
+        
+                        if var _ = imageData {
+        
+                            let image: UIImage = UIImage(data: imageData)!
+        
+                            if let _ = completion {
+        
+                                completion!(imageMovie: movie, mediaImage: image)
+                            }
                         }
-                        
-                            if (data != nil) {
-
-                                let image: UIImage = UIImage(data: data!)!
-
-                                if let _ = completion {
-
-                                    completion!(imageMovie: movie, mediaImage: image)
-                                }
-
+                        else
+                        {
+                            if let _ = completion {
+        
+                                completion!(imageMovie: movie, mediaImage: nil)
                             }
-                            else
-                            {
-                                if let _ = completion {
-
-                                    completion!(imageMovie: movie, mediaImage: nil)
-                                }
-                            }
-
+                        }
                     }
+                    else
+                    {
+        if let thumbnailPath = movie.posterUrl {
+            
+            let urlString: String = String(format: "%@", thumbnailPath)
+            let urlPath = NSURL(string: urlString)
+            let session = NSURLSession.sharedSession()
+            let task = session.dataTaskWithURL(urlPath!){
+                
+                data, response, error -> Void in
+                
+                if (error != nil) {
                     
-                    task.resume()
+                    print(error!.localizedDescription)
                 }
-
-    }
+                
+                if (data != nil) {
+                    
+                    let image: UIImage = UIImage(data: data!)!
+                    
+                    if let _ = completion {
+                        
+                        completion!(imageMovie: movie, mediaImage: image)
+                    }
+                                                    let documentName: String = String(format: "%@_image", movie.imdbID!)
+                    
+                                                    NSFileManager.cfm_saveData(data, toCacheDirectoryPath: documentName)
+                }
+                else
+                {
+                    if let _ = completion {
+                        
+                        completion!(imageMovie: movie, mediaImage: nil)
+                    }
+                }
+                
+            }
+            
+            task.resume()
+        }
+        }
+        }
+            }
 }//end of class

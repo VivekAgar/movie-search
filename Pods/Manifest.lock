@@ -1,0 +1,12 @@
+PODS:
+  - ConvenientFileManager (1.0.3)
+
+DEPENDENCIES:
+  - ConvenientFileManager (~> 1.0)
+
+SPEC CHECKSUMS:
+  ConvenientFileManager: b228ed3c42a87c84600939bafd5cb17b5e1f59b2
+
+PODFILE CHECKSUM: cd6fa32aafbedca416d04486ad2859757113c27b
+
+COCOAPODS: 1.0.0

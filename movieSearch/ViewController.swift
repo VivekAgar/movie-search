@@ -66,6 +66,27 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                                                             cell.moviePoster.image = UIImage(named: "placeHolderImage")
                                                         }
                                                         else{
+                                                            
+                                                            cell.moviePoster.transform = CGAffineTransformMakeScale(
+                                                                0.3,0.3
+                                                            )
+                                                            cell.moviePoster.clipsToBounds = true
+                                                            cell.moviePoster.alpha = 0.6
+                                                            UIView.animateWithDuration(0.5, delay: 0.0, options:UIViewAnimationOptions.CurveEaseOut, animations: {() -> Void in
+                                                                
+                                                                cell.moviePoster.transform = CGAffineTransformMakeScale(
+                                                                    1.0,1.0
+                                                                );
+                                                                
+                                                                cell.moviePoster.alpha =  1.0
+                                                                
+                                                                },completion:{(finished: Bool) -> Void in
+                                                                    
+                                                                    NSLog("Done!")
+                                                                    cell.moviePoster.alpha =  1.0
+                                                                    print("Animation done")
+                                                                    
+                                                            } )
                                                             cell.moviePoster.image = mediaImage
                                                         }
                                                         
@@ -96,26 +117,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return 132
     }
     
-    //Mark - MovieSearchResultsPresenterdelegate
+    //Mark - MovieSearchResultsPresenterdelrceTreeegate
     
     
     func onSearchResults(result : NSArray?)
     {
-        
         self.searchResultsArray.addObjectsFromArray(result as! [AnyObject])
         self.movieTableView.reloadData()
-    
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
