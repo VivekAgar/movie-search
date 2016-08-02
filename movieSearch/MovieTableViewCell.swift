@@ -14,7 +14,8 @@ class MovieTableViewCell: UITableViewCell {
     
     @IBOutlet var moviePoster: UIImageView!
     @IBOutlet var movieTitle: UILabel!
-    @IBOutlet var movieSubTitle: UILabel!
+   
+    @IBOutlet weak var movieSubTitle: UILabel!
     @IBOutlet var movieReleasingYear: UILabel!
 //    required public init?(coder aDecoder: NSCoder) {
 //        super.init(coder: aDecoder)

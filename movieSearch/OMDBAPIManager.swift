@@ -12,7 +12,7 @@ import UIKit
 
 class OMDBAPIManager: APIManager {
     
-    //MARK: - Retrieve Movies
+    //MARK: - Retrieve Search Result
     
     /**
      Retrieve Movies data from Omdb API.
@@ -57,4 +57,47 @@ class OMDBAPIManager: APIManager {
         
         task.resume()
     }
+    
+    
+    
+    
+    class func retrieveMovieDetails(movieID : String, success: NetworkingOnSuccess, failure: NetworkingOnFailure) {
+        
+        //http://www.omdbapi.com/?i
+        let urlString: String = String(format:"http://www.omdbapi.com/?i=%@&plot=%@", movieID,"short")
+        
+        var urlPath = NSURL(string: (urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding))!)!
+        print("URL : \(urlPath)")
+        
+        var session = NSURLSession.sharedSession()
+        
+        var task = session.dataTaskWithURL(urlPath){
+            
+            data, response, error -> Void in
+            
+            if (error != nil) {
+                
+                print(error!.localizedDescription)
+            }
+            
+            do {
+                if let jsonResult = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? Dictionary<String, AnyObject>
+                {
+                    // dispatch_async(dispatch_get_main_queue()){
+                    success(result: jsonResult)
+                    //}
+                    
+                }
+            }
+            catch let error as NSError{
+                print(error.localizedDescription)
+                failure(error: error)
+                
+            }
+        }
+        
+        task.resume()
+    }
+
+    
 }

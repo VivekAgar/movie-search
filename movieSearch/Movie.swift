@@ -29,6 +29,11 @@ struct Constant
     static let IMDB_ID_KEY = "imdbID"
     static let TYPE_KEY = "Type"
     
+    
+    
+    //
+    static let kLoadingCellTag = 1001
+    
 }
 
 class Movie : NSObject{
@@ -49,7 +54,7 @@ class Movie : NSObject{
     var posterUrl : String?
     var metascore : String?
     var imdbRating : String?
-    var imdbVotes : Int?
+    var imdbVotes : String?
     var imdbID : String?
     var type : String?
     
@@ -105,7 +110,7 @@ class Movie : NSObject{
         if let value = dictionary[Constant.IMDB_RATING_KEY] as? String {
             self.imdbRating = value
         }
-        if let value = dictionary[Constant.IMDB_VOTES_KEY] as? Int {
+        if let value = dictionary[Constant.IMDB_VOTES_KEY] as? String {
             self.imdbVotes = value
         }
         if let value = dictionary[Constant.IMDB_ID_KEY] as? String {

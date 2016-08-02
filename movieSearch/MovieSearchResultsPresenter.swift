@@ -8,12 +8,15 @@
 
 import Foundation
 
-protocol MovieSearchResultsPresenterdelegate
+@objc protocol MovieSearchResultsPresenterdelegate
 {
     
-    func onSearchResults(result : NSArray?)
-    
-    
+    func onSearchResults(result : NSArray?, totalresults : Int)
+    optional func onErrorInSearch(error : NSError?)
+    func loadDetailviewController(movie : Movie)
+
+    optional func showLoading()->Void
+    optional func hideLoadingAnimation()->Void
     
 }
 
@@ -22,9 +25,7 @@ protocol MovieSearchResultsPresenterdelegate
 class MovieSearchResultsPresenter : NSObject
 {
     
-    
     var delegate : MovieSearchResultsPresenterdelegate?
-    
     
     init(delegate: MovieSearchResultsPresenterdelegate?) {
         
@@ -33,19 +34,18 @@ class MovieSearchResultsPresenter : NSObject
     }
     
     
-    func fetchSearchResultsWith(searchString : String, andType type:String )-> Void
+    func fetchSearchResultsWith(searchString : String, andType type:String, offset : String)-> Void
     {
-        
-        
-        OMDBAPIManager.retrieveMoviesFor(searchString, offset: "1", type: type,
+        OMDBAPIManager.retrieveMoviesFor(searchString, offset: offset, type: type,
                                          
                 success: { (response)-> Void in
                  if let data = response as? NSDictionary{
                  self.parseSearchResult(data)
+                    
                     }
                  },
                  failure: {(error)->Void in
-//                  self.onError(error!)
+                  self.onError(error!)
             })
     }
     
@@ -56,17 +56,18 @@ class MovieSearchResultsPresenter : NSObject
          if value == "True"
          {
                 let results: NSArray? = data["Search"] as? NSArray
-                
+            let totalResultsCount  = Int((data["totalResults"] as? String)!)
+            
                 if let results = results {
                       let movies : NSArray = self.parseMovies(results)
                     dispatch_async(dispatch_get_main_queue()){
                         
-                        self.delegate?.onSearchResults(movies)
+                        self.delegate?.onSearchResults(movies, totalresults : totalResultsCount! )
                     }
                 }
         }
          else{
-            self.delegate?.onSearchResults(nil)
+            self.delegate?.onSearchResults(nil, totalresults : 0)
             }
         }
         
@@ -90,6 +91,20 @@ class MovieSearchResultsPresenter : NSObject
         
         return moviesArray.copy() as! NSArray
     }
+    
+    
+    func onError(error : NSError)
+    {
+        self.delegate?.onErrorInSearch!(error)
+    }
+    
+    func loadDetailViewControllerFor( movie : Movie )
+    {
+        self.delegate?.loadDetailviewController(movie)
+    }
+    
+    
+    
     
     
 }
