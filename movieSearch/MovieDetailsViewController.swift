@@ -34,6 +34,11 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
     @IBOutlet weak var directorsLabel: UILabel!
     @IBOutlet weak var writersLabel: UILabel!
     
+    @IBOutlet weak var messageView: UIView!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    
     lazy var presenter : MovieDetailsPresenter = MovieDetailsPresenter(delegate: self)
     
     override func viewDidLoad() {
@@ -42,7 +47,8 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
         self.presenter.delegate = self
         self.presenter.fetchMovieDetailsfor(self.movie.imdbID!)
         self.navigationController?.navigationBar.hidden = false
-    
+        self.scrollView.hidden = true
+        self.messageView.hidden = false
     }
     override func viewWillAppear(animated: Bool) {
         
@@ -64,20 +70,20 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
     
     func onMovieDetailsData(movie : Movie)
     {
-        
-        
+        self.scrollView.hidden = false
+        self.messageView.hidden = true
         self.movieTitleLabel.text = movie.title
         self.genreLabel.text = "Genre : \(movie.genre!)"
         self.durationLabel.text = " duration : \(movie.runTime!)"
-        
         self.awardsLabel.text = movie.awards
-        self.metaScoreLabel.text = movie.metascore
+        self.metaScoreLabel.text = " \(movie.metascore!) Metascore"
+        
         self.countryLabel.text =    "Country  : \(movie.country!)"
         self.actorsLabel.text =     "Actors   : \(movie.actors!)"
         self.directorsLabel.text =  "Director : \(movie.director!)"
         self.writersLabel.text =    "Writer    : \(movie.writer!)"
         self.plotShortLabel.text = movie.plot
-        self.ratingsLabel.text = "\(movie.imdbRating!) (\(movie.imdbVotes!) votes )"
+        self.ratingsLabel.text = "\(movie.imdbRating!) \n (\(movie.imdbVotes!) votes )"
         
         self.posterImageView.image = UIImage(named: "placeHolderImage")
         OMDBMediaAPIManager.retrieveOMDBMediaAsset(movie,
@@ -88,7 +94,6 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
                                                             self.posterImageView.image = UIImage(named: "placeHolderImage")
                                                         }
                                                         else{
-                                                            
                                                             self.posterImageView.clipsToBounds = true
                                                             self.posterImageView.alpha = 0.6
                                                             UIView.animateWithDuration(0.5, delay: 0.0, options:UIViewAnimationOptions.CurveEaseOut, animations: {() -> Void in
@@ -106,23 +111,21 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
                                                     })
         })
         
-
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     }
     
+    func onNoResults(){
+        
+        self.scrollView.hidden = true
+        self.messageView.hidden = false
+        self.messageLabel.text = " No search Results found "
     
-    
+    }
+    func onNoNetworkavailable(){
+         self.scrollView.hidden = true
+        self.messageView.hidden = false
+        self.messageLabel.text = "You don't seem to have an active network connection!"
+    }
+
     
 
 }

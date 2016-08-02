@@ -10,18 +10,17 @@ import UIKit
 
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,MovieSearchResultsPresenterdelegate,UISearchBarDelegate {
     
-    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var movieTableView: UITableView!
     
+    @IBOutlet weak var messageView: UIView!
+    @IBOutlet weak var messageLabel: UILabel!
     var searchResultsArray : NSMutableArray = []
     var currentPage : Int = 0
     var totalPages : Int = 0
     var loadedCellCount : Int = 0
     lazy var presenter : MovieSearchResultsPresenter = MovieSearchResultsPresenter(delegate: self)
     let scopeStringsArray = ["", "movie", "series", "episode"]
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +36,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         self.currentPage = 1
         self.totalPages = 0
         self.loadedCellCount = 0
+        self.movieTableView.hidden = true
+        self.messageView.hidden = false
+        self.messageLabel.text = "Filmmaking is a chance to live many lifetimes. \n - Robert Altman"
+        
+        
         
     }
     
@@ -87,11 +91,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
     
     // Mark- UITableViewDataSource delegate
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         
         if (indexPath.row < self.searchResultsArray.count) {
-            var cell : MovieTableViewCell = movieTableView.dequeueReusableCellWithIdentifier("cell") as! MovieTableViewCell
-            var movie: Movie = (self.searchResultsArray.objectAtIndex(indexPath.row) as? Movie)!
+            let cell : MovieTableViewCell = movieTableView.dequeueReusableCellWithIdentifier("cell") as! MovieTableViewCell
+            let movie: Movie = (self.searchResultsArray.objectAtIndex(indexPath.row) as? Movie)!
             
             cell.movieTitle.text = movie.title
             cell.moviePoster.image = UIImage(named: "placeHolderImage")
@@ -103,11 +108,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                                                             }
                                                             else{
                                                                 
-                                                                cell.moviePoster.transform = CGAffineTransformMakeScale(0.3,0.3)
+                                                                //cell.moviePoster.transform = CGAffineTransformMakeScale(0.3,0.3)
                                                                 cell.moviePoster.clipsToBounds = true
                                                                 cell.moviePoster.alpha = 0.6
                                                                 UIView.animateWithDuration(0.5, delay: 0.0, options:UIViewAnimationOptions.CurveEaseOut, animations: {() -> Void in
-                                                                        cell.moviePoster.transform = CGAffineTransformMakeScale(1.0,1.0);
+                                                                        //cell.moviePoster.transform = CGAffineTransformMakeScale(1.0,1.0);
                                                                         cell.moviePoster.alpha =  1.0
                                                                     },
                                                                     completion:{(finished: Bool) -> Void in
@@ -148,7 +153,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("Row \(indexPath.row) selected")
-        var movie: Movie = (self.searchResultsArray.objectAtIndex(indexPath.row) as? Movie)!
+        let movie: Movie = (self.searchResultsArray.objectAtIndex(indexPath.row) as? Movie)!
         self.presenter.loadDetailViewControllerFor(movie)
     }
     
@@ -165,8 +170,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             self.presenter.fetchSearchResultsWith(self.searchBar.text!, andType : "movie", offset : "\(currentPage)" )
             
         }
-        
-        
         
     }
     func loadingCell() -> UITableViewCell {
@@ -188,6 +191,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func onSearchResults(result : NSArray?, totalresults : Int)
     {
+        self.movieTableView.hidden = false
+        self.messageView.hidden = true
        if totalresults%10 == 0
        {
             self.totalPages = totalresults / 10
@@ -203,20 +208,32 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
           self.movieTableView.reloadData()
         }
     }
-    //
     
+    func onNoResults()
+    {
+        self.movieTableView.hidden = true
+        self.messageView.hidden = false
+        self.messageLabel.text = " No search Results found "
+
+    }
     
+    func onNoNetworkavailable()
+    {
+        self.movieTableView.hidden = true
+        self.messageView.hidden = false
+        self.messageLabel.text = "You don't seem to have an active network connection"
+
+    }
 
     // Navigation
     func loadDetailviewController(movie : Movie){
+
         self.performSegueWithIdentifier("Detail", sender: movie)
     }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
         
         if (segue.identifier == "Detail") {
-            // pass data to next view
             if let viewController:MovieDetailsViewController  = segue.destinationViewController as? MovieDetailsViewController {
                 viewController.movie = sender as? Movie
                 

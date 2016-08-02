@@ -7,11 +7,15 @@
 //
 
 import Foundation
+import UIKit
 
 @objc protocol MovieSearchResultsPresenterdelegate
 {
     
     func onSearchResults(result : NSArray?, totalresults : Int)
+    func onNoResults()
+    func onNoNetworkavailable()
+    
     optional func onErrorInSearch(error : NSError?)
     func loadDetailviewController(movie : Movie)
 
@@ -34,9 +38,11 @@ class MovieSearchResultsPresenter : NSObject
     }
     
     
-    func fetchSearchResultsWith(searchString : String, andType type:String, offset : String)-> Void
-    {
-        OMDBAPIManager.retrieveMoviesFor(searchString, offset: offset, type: type,
+    
+    func fetchSearchResultsWith(searchString : String, andType type:String, offset : String)-> Void {
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if (delegate.networkStatus != Reachability.NetworkStatus.NotReachable){
+            OMDBAPIManager.retrieveMoviesFor(searchString, offset: offset, type: type,
                                          
                 success: { (response)-> Void in
                  if let data = response as? NSDictionary{
@@ -47,62 +53,40 @@ class MovieSearchResultsPresenter : NSObject
                  failure: {(error)->Void in
                   self.onError(error!)
             })
+        }
+        else
+        {
+            self.onNoNetworkConnectivity()
+        }
     }
     
-    func parseSearchResult(data : NSDictionary)
-    {
+    func parseSearchResult(data : NSDictionary) {
         
-        if let value = data["Response"] as? String {
-         if value == "True"
-         {
-                let results: NSArray? = data["Search"] as? NSArray
-            let totalResultsCount  = Int((data["totalResults"] as? String)!)
-            
-                if let results = results {
-                      let movies : NSArray = self.parseMovies(results)
-                    dispatch_async(dispatch_get_main_queue()){
-                        
-                        self.delegate?.onSearchResults(movies, totalresults : totalResultsCount! )
-                    }
-                }
-        }
-         else{
-            self.delegate?.onSearchResults(nil, totalresults : 0)
+        let obj : MovieSearchResult = MovieSearchResultParser().parseSearchResult(data)
+        dispatch_async(dispatch_get_main_queue()){
+            if(obj.movies?.count > 0){
+                self.delegate?.onSearchResults(obj.movies, totalresults : (obj.totalsearchResults!).integerValue )
+            }
+            else{
+                self.delegate?.onNoResults()
             }
         }
-        
+    
     }
     
-    func parseMovies(moviesResponse: NSArray) -> NSArray {
-        
-        let moviesArray: NSMutableArray = NSMutableArray(capacity: moviesResponse.count)
-        
-        for movieResponse in moviesResponse {
-            
-            let movieDictionary: NSDictionary = movieResponse as! NSDictionary
-            
-            let movie: Movie? = Movie.init(dictionary: movieDictionary)
-            
-            if movie != nil {
-                
-                moviesArray.addObject(movie!)
-            }
-        }
-        
-        return moviesArray.copy() as! NSArray
+    func onError(error : NSError) {
+        dispatch_async(dispatch_get_main_queue()){ self.delegate?.onErrorInSearch!(error) }
     }
     
-    
-    func onError(error : NSError)
-    {
-        self.delegate?.onErrorInSearch!(error)
-    }
-    
-    func loadDetailViewControllerFor( movie : Movie )
-    {
+    func loadDetailViewControllerFor( movie : Movie ){
         self.delegate?.loadDetailviewController(movie)
     }
     
+    func onNoNetworkConnectivity() {
+         dispatch_async(dispatch_get_main_queue()){
+            self.delegate?.onNoNetworkavailable()
+        }
+    }
     
     
     

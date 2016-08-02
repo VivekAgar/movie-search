@@ -7,11 +7,14 @@
 //
 
 import Foundation
+import UIKit
 
 @objc protocol MovieDetailsPresenterdelegate
 {
     
    func onMovieDetailsData(movie : Movie)
+   func onNoResults()
+   func onNoNetworkavailable()
    optional func onErrorInSearch(error : NSError?)
    
    optional func showLoading()-> Void
@@ -28,18 +31,26 @@ class MovieDetailsPresenter : NSObject
         self.delegate = delegate
     }
 
+    
     func fetchMovieDetailsfor(movieID : String)
     {
-        OMDBAPIManager.retrieveMovieDetails(movieID,
-                  success: {(response)-> Void in
-                          if let data = response as? NSDictionary{
-                            self.parseMovieDetailsResponse(data)
-                                }
-                        },
-                   failure: {(error)->Void in
-                        self.onError(error!)
-        })
-
+       
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if (delegate.networkStatus != Reachability.NetworkStatus.NotReachable){
+            
+            OMDBAPIManager.retrieveMovieDetails(movieID,
+                      success: {(response)-> Void in
+                              if let data = response as? NSDictionary{
+                                self.parseMovieDetailsResponse(data)
+                                    }
+                            },
+                       failure: {(error)->Void in
+                            self.onError(error!)
+            })
+        }
+        else {
+            self.onNoNetworkConnectivity()
+        }
         
     }
     
@@ -50,23 +61,37 @@ class MovieDetailsPresenter : NSObject
             {
             let movieDictionary: NSDictionary = datadict 
             
-                let movie: Movie? = Movie.init(dictionary: movieDictionary)
+                let movie: Movie? = MovieParser().parseMovie(movieDictionary)
                 dispatch_async(dispatch_get_main_queue()){
                     
                     self.delegate?.onMovieDetailsData(movie!)
                 }
             }
+            else{
+                dispatch_async(dispatch_get_main_queue()){
+                    self.delegate?.onNoResults()
+                }
+            }
         }
         else{
-            self.delegate?.onErrorInSearch!(nil)
+            dispatch_async(dispatch_get_main_queue()){
+                self.delegate?.onErrorInSearch!(nil)
+            }
         }
     }
     
     func onError(error : NSError?)
     {
-       self.delegate?.onErrorInSearch!(error)
+       dispatch_async(dispatch_get_main_queue()){
+         self.delegate?.onErrorInSearch!(error)
+        }
     }
     
+    func onNoNetworkConnectivity() {
+        dispatch_async(dispatch_get_main_queue()){
+            self.delegate?.onNoNetworkavailable()
+        }
+    }
 
 
 

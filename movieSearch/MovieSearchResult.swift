@@ -22,13 +22,4 @@ class MovieSearchResult : NSObject{
     var currentPageIndex : NSInteger?
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
