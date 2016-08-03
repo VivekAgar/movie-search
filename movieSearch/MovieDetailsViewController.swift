@@ -120,12 +120,14 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
         self.messageLabel.text = " No search Results found "
     
     }
+   
     func onNoNetworkavailable(){
          self.scrollView.hidden = true
         self.messageView.hidden = false
         self.messageLabel.text = "You don't seem to have an active network connection!"
     }
 
+    
     
 
 }

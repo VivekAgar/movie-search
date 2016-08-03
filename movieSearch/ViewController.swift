@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,MovieSearchResultsPresenterdelegate,UISearchBarDelegate {
     
@@ -225,6 +226,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
     }
 
+    func showLoading(message : String)
+    {
+        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        hud.labelText = message
+    }
+    
+    func hideLoadingAnimation()
+    {
+         MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+    }
+    
+    
+    
     // Navigation
     func loadDetailviewController(movie : Movie){
 

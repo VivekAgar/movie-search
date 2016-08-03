@@ -19,7 +19,7 @@ import UIKit
     optional func onErrorInSearch(error : NSError?)
     func loadDetailviewController(movie : Movie)
 
-    optional func showLoading()->Void
+    optional func showLoading(message :String )->Void
     optional func hideLoadingAnimation()->Void
     
 }

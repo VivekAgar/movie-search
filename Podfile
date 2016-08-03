@@ -7,6 +7,7 @@ target 'movieSearch' do
 
   # Pods for movieSearch
   pod 'ConvenientFileManager', '~> 1.0'
+  pod 'MBProgressHUD', '~> 0.9.0'
   target 'movieSearchTests' do
     inherit! :search_paths
 
