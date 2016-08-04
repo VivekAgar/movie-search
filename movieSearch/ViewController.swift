@@ -55,6 +55,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
        self.navigationController?.navigationBar.hidden = true
         
     }
+    // Mark - UISearchBarDelegate
     
     func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int)
     {
@@ -82,9 +83,21 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             self.presenter.fetchSearchResultsWith(searchBar.text!, andType: type, offset : "\(currentPage)")
         }
         searchBar.resignFirstResponder()
-        //searchBar.text = ""
         
     }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.text = ""
+        self.currentPage = 1
+        self.totalPages = 0
+        self.loadedCellCount = 0
+        self.searchResultsArray.removeAllObjects()
+        self.movieTableView.reloadData()
+        self.movieTableView.hidden = true
+        self.messageView.hidden = false
+        self.messageLabel.text = "Filmmaking is a chance to live many lifetimes. \n - Robert Altman"
+    }
+    
     
     func resetForNewSearch()-> Void
     {
@@ -169,7 +182,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100
+        return 150
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -182,6 +195,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         
     }
+    
     func loadingCell() -> UITableViewCell {
         
         let cell : UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: nil)
@@ -213,9 +227,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         if result?.count > 0 {
         self.searchResultsArray.addObjectsFromArray(result as! [AnyObject])
-//        let arrayofIndexPaths : [NSIndexPath]
-//        let loadedSearchResultCount = searchResultsArray.count
-          self.movieTableView.reloadData()
+        self.movieTableView.reloadData()
         }
     }
     

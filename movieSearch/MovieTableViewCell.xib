@@ -15,11 +15,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="552" height="151"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="PhM-b8-eB6" userLabel="Stack ViewHor">
-                        <rect key="frame" x="5" y="5" width="542" height="147"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="PhM-b8-eB6" userLabel="Stack ViewHor">
+                        <rect key="frame" x="5" y="5" width="542" height="141"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fGc-me-N8s">
-                                <rect key="frame" x="0.0" y="12" width="88" height="124"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fGc-me-N8s">
+                                <rect key="frame" x="0.0" y="5" width="88" height="131"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="placeHolderImage" translatesAutoresizingMaskIntoConstraints="NO" id="ajr-rh-Wfe">
                                         <rect key="frame" x="0.0" y="0.0" width="88" height="87"/>
@@ -45,20 +45,17 @@
                                     <constraint firstAttribute="width" secondItem="ajr-rh-Wfe" secondAttribute="width" id="u1S-RA-lHb"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Yjv-la-3QK">
-                                <rect key="frame" x="98" y="0.0" width="444" height="147"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Yjv-la-3QK">
+                                <rect key="frame" x="98" y="0.0" width="444" height="141"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game of Thrones: You Win or You Die - Inside the HBO Series" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="DyA-xv-ZlJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="83"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="55" id="hgV-4z-HEo"/>
-                                        </constraints>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Game of Thrones: You Win or You Die - Inside the HBO Series" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="DyA-xv-ZlJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="77"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SubTitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lLd-vP-NFE" userLabel="MovieSubTitle">
-                                        <rect key="frame" x="0.0" y="87" width="400" height="28"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SubTitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lLd-vP-NFE" userLabel="MovieSubTitle">
+                                        <rect key="frame" x="0.0" y="81" width="400" height="28"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="28" id="Hcw-Ab-3bx"/>
                                         </constraints>
@@ -66,8 +63,8 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4y-uc-brn">
-                                        <rect key="frame" x="0.0" y="119" width="444" height="28"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Year" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4y-uc-brn">
+                                        <rect key="frame" x="0.0" y="113" width="444" height="28"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="28" id="KBv-gy-yR5"/>
                                         </constraints>
@@ -107,6 +104,6 @@
     </objects>
     <resources>
         <image name="bookMarkImage" width="64" height="64"/>
-        <image name="placeHolderImage" width="84" height="124"/>
+        <image name="placeHolderImage" width="150" height="222"/>
     </resources>
 </document>
