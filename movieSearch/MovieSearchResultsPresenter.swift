@@ -19,7 +19,7 @@ import UIKit
     optional func onErrorInSearch(error : NSError?)
     func loadDetailviewController(movie : Movie)
 
-    optional func showLoading()->Void
+    optional func showLoading(message :String )->Void
     optional func hideLoadingAnimation()->Void
     
 }
@@ -40,8 +40,11 @@ class MovieSearchResultsPresenter : NSObject
     
     
     func fetchSearchResultsWith(searchString : String, andType type:String, offset : String)-> Void {
+        
+        
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if (delegate.networkStatus != Reachability.NetworkStatus.NotReachable){
+            self.delegate?.showLoading!("Loading...")
             OMDBAPIManager.retrieveMoviesFor(searchString, offset: offset, type: type,
                                          
                 success: { (response)-> Void in
@@ -61,9 +64,12 @@ class MovieSearchResultsPresenter : NSObject
     }
     
     func parseSearchResult(data : NSDictionary) {
+       
         
         let obj : MovieSearchResult = MovieSearchResultParser().parseSearchResult(data)
+        
         dispatch_async(dispatch_get_main_queue()){
+             self.delegate?.hideLoadingAnimation!()
             if(obj.movies?.count > 0){
                 self.delegate?.onSearchResults(obj.movies, totalresults : (obj.totalsearchResults!).integerValue )
             }

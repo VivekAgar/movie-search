@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,MovieSearchResultsPresenterdelegate,UISearchBarDelegate {
     
@@ -54,6 +55,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
        self.navigationController?.navigationBar.hidden = true
         
     }
+    // Mark - UISearchBarDelegate
     
     func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int)
     {
@@ -61,10 +63,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         print("selected index \(selectedScope)")
         if searchBar.text!.characters.count > 0 {
             let type = self.scopeStringsArray[selectedScope]
-            self.currentPage = 1
-            self.totalPages = 0
-            self.loadedCellCount = 0
-            self.searchResultsArray.removeAllObjects()
+            self.resetForNewSearch()
+            self.movieTableView.hidden = true
+            self.messageView.hidden = false
+            self.messageLabel.text = "Filmmaking is a chance to live many lifetimes. \n - Robert Altman"
             self.movieTableView.reloadData()
             self.presenter.fetchSearchResultsWith(searchBar.text!, andType: type, offset : "\(currentPage)")
         }
@@ -72,22 +74,43 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar!) {
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         
         print(searchBar.text!)
         if searchBar.text!.characters.count > 0 {
             let type = self.scopeStringsArray[searchBar.selectedScopeButtonIndex]
-            self.currentPage = 1
-            self.totalPages = 0
-            self.loadedCellCount = 0
-            self.searchResultsArray.removeAllObjects()
-            self.movieTableView.reloadData()
+            self.resetForNewSearch()
             self.presenter.fetchSearchResultsWith(searchBar.text!, andType: type, offset : "\(currentPage)")
         }
         searchBar.resignFirstResponder()
-        //searchBar.text = ""
         
     }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.text = ""
+        self.currentPage = 1
+        self.totalPages = 0
+        self.loadedCellCount = 0
+        self.searchResultsArray.removeAllObjects()
+        self.movieTableView.reloadData()
+        self.movieTableView.hidden = true
+        self.messageView.hidden = false
+        self.messageLabel.text = "Filmmaking is a chance to live many lifetimes. \n - Robert Altman"
+    }
+    
+    
+    func resetForNewSearch()-> Void
+    {
+        self.currentPage = 1
+        self.totalPages = 0
+        self.loadedCellCount = 0
+        self.searchResultsArray.removeAllObjects()
+        self.movieTableView.reloadData()
+
+    }
+    
+    
+    
 
     
     // Mark- UITableViewDataSource delegate
@@ -159,7 +182,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100
+        return 150
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -172,6 +195,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         
     }
+    
     func loadingCell() -> UITableViewCell {
         
         let cell : UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: nil)
@@ -203,9 +227,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         if result?.count > 0 {
         self.searchResultsArray.addObjectsFromArray(result as! [AnyObject])
-//        let arrayofIndexPaths : [NSIndexPath]
-//        let loadedSearchResultCount = searchResultsArray.count
-          self.movieTableView.reloadData()
+        self.movieTableView.reloadData()
         }
     }
     
@@ -225,6 +247,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
     }
 
+    func showLoading(message : String)
+    {
+        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        hud.labelText = message
+    }
+    
+    func hideLoadingAnimation()
+    {
+         MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+    }
+    
+    
+    
     // Navigation
     func loadDetailviewController(movie : Movie){
 
