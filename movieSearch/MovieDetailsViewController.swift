@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelegate{
     
@@ -49,6 +50,7 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
         self.navigationController?.navigationBar.hidden = false
         self.scrollView.hidden = true
         self.messageView.hidden = false
+         self.navigationController?.navigationBar.backgroundColor = UIColor.clearColor()
     }
     override func viewWillAppear(animated: Bool) {
         
@@ -72,16 +74,16 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
     {
         self.scrollView.hidden = false
         self.messageView.hidden = true
-        self.movieTitleLabel.text = movie.title
+        self.movieTitleLabel.text = "\(movie.title!) \n \(movie.year!)"
         self.genreLabel.text = "Genre : \(movie.genre!)"
         self.durationLabel.text = " duration : \(movie.runTime!)"
         self.awardsLabel.text = movie.awards
         self.metaScoreLabel.text = " \(movie.metascore!) Metascore"
         
-        self.countryLabel.text =    "Country  : \(movie.country!)"
-        self.actorsLabel.text =     "Actors   : \(movie.actors!)"
-        self.directorsLabel.text =  "Director : \(movie.director!)"
-        self.writersLabel.text =    "Writer    : \(movie.writer!)"
+        self.countryLabel.text =    "\(movie.country!)"
+        self.actorsLabel.text =     "\(movie.actors!)"
+        self.directorsLabel.text =  "\(movie.director!)"
+        self.writersLabel.text =    "\(movie.writer!)"
         self.plotShortLabel.text = movie.plot
         self.ratingsLabel.text = "\(movie.imdbRating!) \n (\(movie.imdbVotes!) votes )"
         
@@ -96,6 +98,9 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
                                                         else{
                                                             self.posterImageView.clipsToBounds = true
                                                             self.posterImageView.alpha = 0.6
+                                                            self.posterImageView.image = mediaImage
+                                                            //get the colors of image
+                                                            self.setTitleBackGround(mediaImage!)
                                                             UIView.animateWithDuration(0.5, delay: 0.0, options:UIViewAnimationOptions.CurveEaseOut, animations: {() -> Void in
                                                                 self.posterImageView.alpha =  1.0
                                                                 },completion:{(finished: Bool) -> Void in
@@ -105,13 +110,36 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
                                                                     print("Animation done")
                                                                     
                                                             } )
-                                                            self.posterImageView.image = mediaImage
+                                                            
                                                         }
                                                         
                                                     })
         })
         
     }
+    
+    
+    func setTitleBackGround(mediaImage : UIImage){
+        
+        let scaledWidth : CGFloat = mediaImage.size.width * 0.3
+        let scaledHeight : CGFloat = mediaImage.size.height * 0.3
+            mediaImage.getColors(CGSizeMake(scaledWidth, scaledHeight),
+                 completionHandler: { (colors: UIImageColors) -> Void in
+                    
+                    self.titleBgView.backgroundColor = colors.primaryColor
+                    self.navigationController?.navigationBar.barStyle = .BlackTranslucent
+                    self.navigationController?.navigationBar.backgroundColor = colors.primaryColor
+                    self.navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
+                    self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+                    //self.navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
+                    self.navigationController?.navigationBar.translucent = true
+                    self.navigationController?.navigationBar.setBackgroundImage(UIImage() , forBarMetrics:.Default)
+                    
+            })
+    
+    }
+    
+    
     
     func onNoResults(){
         
@@ -125,6 +153,17 @@ class MovieDetailsViewController: UIViewController , MovieDetailsPresenterdelega
          self.scrollView.hidden = true
         self.messageView.hidden = false
         self.messageLabel.text = "You don't seem to have an active network connection!"
+    }
+
+    func showLoading(message : String)
+    {
+        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        hud.labelText = message
+    }
+    
+    func hideLoadingAnimation()
+    {
+        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
     }
 
     

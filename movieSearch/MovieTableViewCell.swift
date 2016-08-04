@@ -1,6 +1,6 @@
 //
 //  MovieTableViewCell.swift
-//  movieSearchDummy
+//  movieSearch
 //
 //  Created by Satya on 26/07/16.
 //  Copyright © 2016 slonkit. All rights reserved.

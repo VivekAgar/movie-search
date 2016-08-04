@@ -1,21 +1,20 @@
 //
-//  MovieParser_Test.swift
+//  Movie_Parser_Test.swift
 //  movieSearch
 //
-//  Created by Satya on 03/08/16.
+//  Created by Satya on 04/08/16.
 //  Copyright © 2016 My Company. All rights reserved.
 //
 
 import XCTest
-
-class MovieParser_Test: XCTestCase {
-    
+//@testable import movieSearch
+class Movie_Parser_Test: XCTestCase {
     
     //MARK: - Accessors
     
     var parser: MovieParser?
     
-   // var moviesJSON: NSArray?
+    // var moviesJSON: NSArray?
     var movieJSON: NSDictionary?
     var moviesJson : NSArray?
     
@@ -40,9 +39,6 @@ class MovieParser_Test: XCTestCase {
     var type : String?
     var response : String?
     
-    
-    
-
     // MARK: - TestSuiteLifecycle
     
     override func setUp() {
@@ -50,51 +46,51 @@ class MovieParser_Test: XCTestCase {
         
         parser = MovieParser.init()
         
-                title = "The Magical World of Harry Potter: The Unauthorized Story of J.K. Rowling"
-                year = "2000"
-                rated = "N/A"
-                released = "N/A"
-                runTime =  "50 min"
-                genre = "Documentary"
-                director = "Stephen Grant"
-                writer = "Stephen Grant"
-                 actors = "J.K. Rowling"
-                plot = "Everyone's favorite boy wizard is Harry Potter. By now, he and friends Ron, Hermoine and everyone else at Hogwarts are as magical to you as they are to the millions of fans around the world..."
-                language = "English"
-                country = "UK"
-                awards = "N/A"
-                posterUrl = "http://ia.media-imdb.com/images/M/MV5BMjE4MTM1NTUyNV5BMl5BanBnXkFtZTgwNDgyMzI2NTE@._V1_SX300.jpg"
-                metascore = "N/A"
-                 imdbRating = "7.2"
-                imdbVotes = "70"
-                imdbID = "tt0308533"
-                type = "movie"
-                response = "True"
+        title = "The Magical World of Harry Potter: The Unauthorized Story of J.K. Rowling"
+        year = "2000"
+        rated = "N/A"
+        released = "N/A"
+        runTime =  "50 min"
+        genre = "Documentary"
+        director = "Stephen Grant"
+        writer = "Stephen Grant"
+        actors = "J.K. Rowling"
+        plot = "Everyone's favorite boy wizard is Harry Potter. By now, he and friends Ron, Hermoine and everyone else at Hogwarts are as magical to you as they are to the millions of fans around the world..."
+        language = "English"
+        country = "UK"
+        awards = "N/A"
+        posterUrl = "http://ia.media-imdb.com/images/M/MV5BMjE4MTM1NTUyNV5BMl5BanBnXkFtZTgwNDgyMzI2NTE@._V1_SX300.jpg"
+        metascore = "N/A"
+        imdbRating = "7.2"
+        imdbVotes = "70"
+        imdbID = "tt0308533"
+        type = "movie"
+        response = "True"
         
         
         movieJSON = [
             
-                "Title":title!,
-                "Year":year!,
-                "Rated":rated!,
-                "Released":released!,
-                "Runtime":runTime!,
-                "Genre":genre!,
-                "Director":director!,
-                "Writer":writer!,
-                "Actors":actors!,
-                "Plot":plot!,
-                "Language":language!,
-                "Country":country!,
-                "Awards":awards!,
-                "Poster":posterUrl!,
-                "Metascore":metascore!,
-                "imdbRating":imdbRating!,
-                "imdbVotes": imdbVotes!,
-                "imdbID":imdbID!,
-                "Type":type!,
-                "Response": response!
-           ]
+            "Title":title!,
+            "Year":year!,
+            "Rated":rated!,
+            "Released":released!,
+            "Runtime":runTime!,
+            "Genre":genre!,
+            "Director":director!,
+            "Writer":writer!,
+            "Actors":actors!,
+            "Plot":plot!,
+            "Language":language!,
+            "Country":country!,
+            "Awards":awards!,
+            "Poster":posterUrl!,
+            "Metascore":metascore!,
+            "imdbRating":imdbRating!,
+            "imdbVotes": imdbVotes!,
+            "imdbID":imdbID!,
+            "Type":type!,
+            "Response": response!
+        ]
         
         moviesJson = [movieJSON!,[
             
@@ -163,7 +159,7 @@ class MovieParser_Test: XCTestCase {
         
         XCTAssertNotNil(movie, "A valid Movie object wasn't created");
     }
-
+    
     func test_parseMovie_imdbID() {
         
         let movie = parser?.parseMovie(movieJSON!)
@@ -177,28 +173,28 @@ class MovieParser_Test: XCTestCase {
         
         XCTAssertTrue(movie!.title! == title!, String(format:"title property was not set properly. Was set to: %@ rather than: %@", movie!.title!, title!));
     }
-
+    
     func test_parseMovie_plot() {
         
         let movie = parser?.parseMovie(movieJSON!)
         
         XCTAssertTrue(movie!.plot! == plot!, String(format:"Movie Plot property was not set properly. Was set to: %@ rather than: %@", movie!.plot!, plot!));
     }
-
+    
     func test_parseMovie_posterUrl() {
         
         let movie = parser?.parseMovie(movieJSON!)
         
         XCTAssertTrue(movie!.posterUrl! == posterUrl!, String(format:"posterUrl property was not set properly. Was set to: %@ rather than: %@", movie!.posterUrl!, posterUrl!))
     }
-
-
+    
+    
     
     func test_parseMovie_runtime(){
         let movie = parser?.parseMovie(movieJSON!)
         
         XCTAssertTrue(movie!.runTime! == runTime!, String(format:"runTime property was not set properly. Was set to: %@ rather than: %@", movie!.runTime!, runTime!));
-    
+        
     }
     
     func test_parseMovie_writers(){
@@ -211,7 +207,7 @@ class MovieParser_Test: XCTestCase {
         let movie = parser?.parseMovie(movieJSON!)
         
         XCTAssertTrue(movie!.genre! == genre!, String(format:"genre property was not set properly. Was set to: %@ rather than: %@", movie!.genre!, genre!));
-    
+        
     }
     
     func test_parseMovie_year() {
@@ -220,19 +216,12 @@ class MovieParser_Test: XCTestCase {
         XCTAssertTrue(movie!.year! == year!, String(format:"year property was not set properly. Was set to: %@ rather than: %@", movie!.year!, year!))
     }
     
-//    func testExample() {
-//        // This is an example of a functional test case.
-//        // Use XCTAssert and related functions to verify your tests produce the correct results.
-//    }
-
     func testPerformance_parseMovie() {
-        // This is an example of a performance test case.
         self.measureBlock {
             // Put the code you want to measure the time of here.
-             let movie = self.parser?.parseMovie(self.movieJSON!)
+            let movie = self.parser?.parseMovie(self.movieJSON!)
         }
     }
-    
     
     //# - Mark
     
@@ -286,5 +275,4 @@ class MovieParser_Test: XCTestCase {
 
     
     
-
 }

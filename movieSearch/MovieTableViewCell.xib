@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,10 +16,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="PhM-b8-eB6" userLabel="Stack ViewHor">
-                        <rect key="frame" x="5" y="5" width="542" height="133"/>
+                        <rect key="frame" x="5" y="5" width="542" height="147"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fGc-me-N8s">
-                                <rect key="frame" x="0.0" y="5" width="88" height="124"/>
+                                <rect key="frame" x="0.0" y="12" width="88" height="124"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="placeHolderImage" translatesAutoresizingMaskIntoConstraints="NO" id="ajr-rh-Wfe">
                                         <rect key="frame" x="0.0" y="0.0" width="88" height="87"/>
@@ -45,19 +46,19 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Yjv-la-3QK">
-                                <rect key="frame" x="98" y="0.0" width="444" height="133"/>
+                                <rect key="frame" x="98" y="0.0" width="444" height="147"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game of Thrones: You Win or You Die - Inside the HBO Series" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="DyA-xv-ZlJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="444" height="69"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="83"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="hgV-4z-HEo"/>
+                                            <constraint firstAttribute="height" constant="55" id="hgV-4z-HEo"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SubTitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lLd-vP-NFE" userLabel="MovieSubTitle">
-                                        <rect key="frame" x="0.0" y="73" width="444" height="28"/>
+                                        <rect key="frame" x="0.0" y="87" width="400" height="28"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="28" id="Hcw-Ab-3bx"/>
                                         </constraints>
@@ -66,7 +67,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4y-uc-brn">
-                                        <rect key="frame" x="0.0" y="105" width="444" height="28"/>
+                                        <rect key="frame" x="0.0" y="119" width="444" height="28"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="28" id="KBv-gy-yR5"/>
                                         </constraints>
@@ -78,7 +79,7 @@
                                 <constraints>
                                     <constraint firstItem="lLd-vP-NFE" firstAttribute="width" secondItem="DyA-xv-ZlJ" secondAttribute="width" id="eg5-st-NVL"/>
                                     <constraint firstItem="f4y-uc-brn" firstAttribute="width" secondItem="Yjv-la-3QK" secondAttribute="width" id="u2b-SE-uyC"/>
-                                    <constraint firstItem="DyA-xv-ZlJ" firstAttribute="width" secondItem="Yjv-la-3QK" secondAttribute="width" id="xp4-FH-cMy"/>
+                                    <constraint firstItem="DyA-xv-ZlJ" firstAttribute="width" secondItem="Yjv-la-3QK" secondAttribute="width" multiplier="0.9" id="xp4-FH-cMy"/>
                                 </constraints>
                             </stackView>
                         </subviews>

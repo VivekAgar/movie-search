@@ -62,10 +62,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         print("selected index \(selectedScope)")
         if searchBar.text!.characters.count > 0 {
             let type = self.scopeStringsArray[selectedScope]
-            self.currentPage = 1
-            self.totalPages = 0
-            self.loadedCellCount = 0
-            self.searchResultsArray.removeAllObjects()
+            self.resetForNewSearch()
+            self.movieTableView.hidden = true
+            self.messageView.hidden = false
+            self.messageLabel.text = "Filmmaking is a chance to live many lifetimes. \n - Robert Altman"
             self.movieTableView.reloadData()
             self.presenter.fetchSearchResultsWith(searchBar.text!, andType: type, offset : "\(currentPage)")
         }
@@ -73,22 +73,31 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar!) {
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         
         print(searchBar.text!)
         if searchBar.text!.characters.count > 0 {
             let type = self.scopeStringsArray[searchBar.selectedScopeButtonIndex]
-            self.currentPage = 1
-            self.totalPages = 0
-            self.loadedCellCount = 0
-            self.searchResultsArray.removeAllObjects()
-            self.movieTableView.reloadData()
+            self.resetForNewSearch()
             self.presenter.fetchSearchResultsWith(searchBar.text!, andType: type, offset : "\(currentPage)")
         }
         searchBar.resignFirstResponder()
         //searchBar.text = ""
         
     }
+    
+    func resetForNewSearch()-> Void
+    {
+        self.currentPage = 1
+        self.totalPages = 0
+        self.loadedCellCount = 0
+        self.searchResultsArray.removeAllObjects()
+        self.movieTableView.reloadData()
+
+    }
+    
+    
+    
 
     
     // Mark- UITableViewDataSource delegate

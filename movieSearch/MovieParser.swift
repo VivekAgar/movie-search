@@ -15,7 +15,7 @@ class MovieParser : NSObject
     /**
      Parse a movie response from the OMDB API.
      
-     - parameter moviesResponse : a comic response from the OMDB API
+     - parameter moviesResponse : a movie response from the OMDB API
      
      - returns: An array with Movie objects parsed.
      */
@@ -115,9 +115,5 @@ class MovieParser : NSObject
         return movie
     }
     
-
-
-
-
 
 }

@@ -17,7 +17,7 @@ import UIKit
    func onNoNetworkavailable()
    optional func onErrorInSearch(error : NSError?)
    
-   optional func showLoading()-> Void
+   optional func showLoading(message :String )->Void
    optional func hideLoadingAnimation() -> Void
 
 }
@@ -37,7 +37,7 @@ class MovieDetailsPresenter : NSObject
        
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if (delegate.networkStatus != Reachability.NetworkStatus.NotReachable){
-            
+            self.delegate?.showLoading!("Loading...")
             OMDBAPIManager.retrieveMovieDetails(movieID,
                       success: {(response)-> Void in
                               if let data = response as? NSDictionary{
@@ -63,18 +63,20 @@ class MovieDetailsPresenter : NSObject
             
                 let movie: Movie? = MovieParser().parseMovie(movieDictionary)
                 dispatch_async(dispatch_get_main_queue()){
-                    
+                    self.delegate?.hideLoadingAnimation!()
                     self.delegate?.onMovieDetailsData(movie!)
                 }
             }
             else{
                 dispatch_async(dispatch_get_main_queue()){
+                     self.delegate?.hideLoadingAnimation!()
                     self.delegate?.onNoResults()
                 }
             }
         }
         else{
             dispatch_async(dispatch_get_main_queue()){
+                 self.delegate?.hideLoadingAnimation!()
                 self.delegate?.onErrorInSearch!(nil)
             }
         }
@@ -83,6 +85,7 @@ class MovieDetailsPresenter : NSObject
     func onError(error : NSError?)
     {
        dispatch_async(dispatch_get_main_queue()){
+         self.delegate?.hideLoadingAnimation!()
          self.delegate?.onErrorInSearch!(error)
         }
     }
