@@ -12,10 +12,15 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    var networkStatus : Reachability.NetworkStatus!
+    private var reachability:Reachability!;
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"checkNetworkStatus", name: ReachabilityChangedNotification, object: nil);
+        do{self.reachability = try Reachability.reachabilityForInternetConnection()}catch{}
+        do{try self.reachability.startNotifier()}catch{}
+        self.checkNetworkStatus()
+
         return true
     }
 
@@ -41,6 +46,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    //Reachability check 
+    func checkNetworkStatus()
+    {
+        networkStatus = reachability.currentReachabilityStatus
+        
+        if (networkStatus == Reachability.NetworkStatus.NotReachable)
+        {
+            print("Not Reachable")
+        }
+        else
+        {
+            print("Reachable")
+        }
+    }
+
+    
+    
+    
 
 }
 
