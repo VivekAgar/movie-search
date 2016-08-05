@@ -41,7 +41,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         self.messageView.hidden = false
         self.messageLabel.text = "Filmmaking is a chance to live many lifetimes. \n - Robert Altman"
         
-        
+        let tapGesture  = UITapGestureRecognizer(target: self, action: "userTappedInView:")
+        self.view.addGestureRecognizer(tapGesture)
         
     }
     
@@ -55,6 +56,18 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
        self.navigationController?.navigationBar.hidden = true
         
     }
+    
+    
+    func userTappedInView(recognizer : UITapGestureRecognizer) {
+        
+        //println("tapped!")
+        self.searchBar.resignFirstResponder()
+        
+    }
+    
+    
+    
+    
     // Mark - UISearchBarDelegate
     
     func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int)
@@ -96,6 +109,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         self.movieTableView.hidden = true
         self.messageView.hidden = false
         self.messageLabel.text = "Filmmaking is a chance to live many lifetimes. \n - Robert Altman"
+        self.searchBar.resignFirstResponder()
     }
     
     
