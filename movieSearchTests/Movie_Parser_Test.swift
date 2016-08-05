@@ -7,7 +7,7 @@
 //
 
 import XCTest
-//@testable import movieSearch
+@testable import movieSearch
 class Movie_Parser_Test: XCTestCase {
     
     //MARK: - Accessors
@@ -15,9 +15,9 @@ class Movie_Parser_Test: XCTestCase {
     var parser: MovieParser?
     
     // var moviesJSON: NSArray?
-    var movieJSON: NSDictionary?
+    var movieJSON : NSDictionary?
+    var movieJSON1 : NSDictionary?
     var moviesJson : NSArray?
-    
     var title : String?
     var year : String?
     var rated : String?
@@ -92,7 +92,8 @@ class Movie_Parser_Test: XCTestCase {
             "Response": response!
         ]
         
-        moviesJson = [movieJSON!,[
+        
+       movieJSON1 =  [
             
             "Title":"Harry Potter and the Deathly Hallows: Part 2",
             "Year":"2011",
@@ -101,13 +102,13 @@ class Movie_Parser_Test: XCTestCase {
             "Runtime":"120 min",
             "Genre":"Adventure, Drama",
             "Director":"",
-            "Writer":""!,
+            "Writer":"",
             "Actors":"",
             "Plot":" short plot of Harry Potter",
             "Language":"English",
             "Country":"Uk",
             "Awards":"Nominated for 3 Oscars.",
-            "Poster":""!,
+            "Poster":"",
             "Metascore":"78",
             "imdbRating":"8.1",
             "imdbVotes": "535, 695",
@@ -115,7 +116,10 @@ class Movie_Parser_Test: XCTestCase {
             "Type":"movie",
             "Response": "true"
             ]
-        ]
+        
+        moviesJson = [movieJSON!,movieJSON1!]
+        
+        
         
         
         
@@ -229,14 +233,14 @@ class Movie_Parser_Test: XCTestCase {
     
     func test_parseMovies_newMoviesArrayReturned() {
         
-        let movies = parser?.parseMovies(moviesJSON!)
+        let movies = parser?.parseMovies(moviesJson!)
         
         XCTAssertNotNil(movies, "A valid Movies Array object wasn't created");
     }
     
     func test_parseMovies_count() {
         
-        let movies = parser?.parseMovies(moviesJSON!)
+        let movies = parser?.parseMovies(moviesJson!)
         let arrayCount = NSNumber(integer: movies!.count)
         let jsonCount = NSNumber(integer: moviesJson!.count)
         
@@ -245,7 +249,7 @@ class Movie_Parser_Test: XCTestCase {
     
     func test_parseMovies_uniqueObjects() {
         
-        let movies = parser?.parseMovies(moviesJSON!)
+        let movies = parser?.parseMovies(moviesJson!)
         
         let firstObject = movies?.firstObject as! Movie
         let lastObject = movies?.lastObject as! Movie
@@ -255,7 +259,7 @@ class Movie_Parser_Test: XCTestCase {
     
     func test_parseMovies_orderFirstObjects() {
         
-        let movies = parser?.parseMovies(moviesJSON!)
+        let movies = parser?.parseMovies(moviesJson!)
         
         let firstObjectParsed = movies?.firstObject as! Movie
         let firstObject = moviesJson!.firstObject as! NSDictionary
@@ -265,10 +269,10 @@ class Movie_Parser_Test: XCTestCase {
     
     func test_parseMovies_orderLastObjects() {
         
-        let movies = parser?.parseMovies(moviesJSON!)
+        let movies = parser?.parseMovies(moviesJson!)
         
         let lastObjectParsed = movies?.lastObject as! Movie
-        let lastObject = moviesJSON!.lastObject as! NSDictionary
+        let lastObject = moviesJson!.lastObject as! NSDictionary
         
         XCTAssertEqual(lastObjectParsed.imdbID, (lastObject["imdbID"] as! String), String(format:"Should have the same ID: %@", lastObjectParsed.imdbID!));
     }
